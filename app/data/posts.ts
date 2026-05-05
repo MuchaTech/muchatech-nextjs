@@ -8,7 +8,7 @@ export interface BlogPost {
   author: string;
   readTime: number;
   published: boolean;
-  accent: "#0094CC" | "#00A86B";
+  accent: "#0094CC" | "#00A86B" | "#2BE9F0" | "#FC21D1";
 }
 
 export const defaultPosts: BlogPost[] = [
