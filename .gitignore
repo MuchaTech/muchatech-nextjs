@@ -1,0 +1,42 @@
+# Next.js outputs
+.next/
+out/
+build/
+.next-build-output
+
+# Dependency directories
+node_modules/
+bower_components/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.production
+.env.development
+.env.test
+.env.ci
+.secrets
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-error.log*
+yarn-debug.log*
+
+# Misc
+.DS_Store
+*.swp
+Thumbs.db
+.idea/
+.vscode/
+cache/
+coverage/
+!
+coverage/cypress/
+dist/
+target/
+tmp/
+*.tmp
+.DS_Store?
