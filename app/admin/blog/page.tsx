@@ -694,7 +694,7 @@ export default function BlogAdmin() {
                       ].map(({ col, label }) => (
                         <button
                           key={col}
-                          onClick={() => updateField("accent", col)}
+                          onClick={() => updateField("accent", "#2BE9F0")}
                           className="flex-1 py-2 rounded-xl border-2 font-mono text-xs font-semibold transition-all"
                           style={{
                             backgroundColor: `${col}14`,
