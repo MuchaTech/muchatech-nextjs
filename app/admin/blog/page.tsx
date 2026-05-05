@@ -55,7 +55,7 @@ const blankPost = (): BlogPost => ({
   author: "MuchaTech Team",
   readTime: 3,
   published: false,
-  accent: "#0094CC",
+  accent: "#2BE9F0",
 });
 
 /* ─── Markdown preview ─────────────────────────────────────────── */
