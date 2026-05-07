@@ -18,48 +18,147 @@ import { usePost, usePosts } from "@/lib/usePosts";
 
 /* ── Markdown → HTML ──────────────────────────────────────────── */
 function renderMarkdown(md: string): string {
-  return (
-    md
-      // Headings — must come before paragraph catch-all
-      .replace(
-        /^### (.+)$/gm,
-        '<h3 class="font-display text-xl font-bold text-[var(--tx-0)] mt-8 mb-3">$1</h3>',
-      )
-      .replace(
-        /^## (.+)$/gm,
-        '<h2 class="font-display text-2xl font-bold text-[var(--tx-0)] mt-10 mb-4 pb-2 border-b border-[var(--border)]">$1</h2>',
-      )
-      .replace(
-        /^# (.+)$/gm,
-        '<h1 class="font-display text-3xl font-bold text-[var(--tx-0)] mt-10 mb-4">$1</h1>',
-      )
-      // Inline formatting
-      .replace(
-        /\*\*(.+?)\*\*/g,
-        '<strong class="font-semibold text-[var(--tx-0)]">$1</strong>',
-      )
-      .replace(/\*(.+?)\*/g, '<em class="italic text-[var(--tx-1)]">$1</em>')
-      .replace(
-        /`(.+?)`/g,
-        '<code class="bg-brand-grad/10 text-[#2BE9F0] px-1.5 py-0.5 rounded font-mono text-sm">$1</code>',
-      )
-      // Lists
-      .replace(
-        /^\d+\. (.+)$/gm,
-        '<li class="ml-6 list-decimal text-[var(--tx-1)] mb-2 leading-relaxed pl-1">$1</li>',
-      )
-      .replace(
-        /^- (.+)$/gm,
-        '<li class="ml-6 list-disc text-[var(--tx-1)] mb-2 leading-relaxed pl-1">$1</li>',
-      )
-      // Paragraphs — any non-empty line that isn't already an HTML tag
-      .replace(
-        /^(?!<|$)(.+)$/gm,
-        '<p class="text-[var(--tx-1)] leading-[1.85] mb-4">$1</p>',
-      )
-      // Tidy up excess blank lines
-      .replace(/\n{3,}/g, "\n\n")
+  // Normalize and escape problematic content
+  let result = md.replace(/\r\n/g, "\n").trim();
+
+  // Protect escaped characters
+  result = result.replace(/\\([*`\[\]{}\\])/g, "\x00$1\x00");
+
+  // Headings (before paragraphs)
+  result = result.replace(
+    /^### (.+)$/gm,
+    '<h3 class="font-display text-xl font-bold text-[var(--tx-0)] mt-8 mb-3">$1</h3>',
   );
+  result = result.replace(
+    /^## (.+)$/gm,
+    '<h2 class="font-display text-2xl font-bold text-[var(--tx-0)] mt-10 mb-4 pb-2 border-b border-[var(--border)]">$1</h2>',
+  );
+  result = result.replace(
+    /^# (.+)$/gm,
+    '<h1 class="font-display text-3xl font-bold text-[var(--tx-0)] mt-10 mb-4">$1</h1>',
+  );
+
+  // Diagrams - Mermaid syntax
+  result = result.replace(/```mermaid\n([\s\S]*?)\n```/g, (match, diagram) => {
+    const encoded = encodeURIComponent(diagram.trim());
+    return `<div class="my-6 p-4 bg-[var(--bg-1)] rounded border border-[var(--border)] overflow-x-auto">
+        <img src="https://mermaid.ink/img/${encoded}" alt="Diagram" class="max-w-full" />
+      </div>`;
+  });
+
+  // Diagrams - ASCII/text diagrams in code blocks
+  result = result.replace(/```diagram\n([\s\S]*?)\n```/g, (match, diagram) => {
+    return `<div class="my-6 p-4 bg-[var(--bg-1)] rounded border border-[var(--border)] overflow-x-auto">
+        <pre class="font-mono text-sm text-[var(--tx-1)] whitespace-pre">${diagram.trim()}</pre>
+      </div>`;
+  });
+
+  // Diagrams - SVG inline
+  result = result.replace(/```svg\n([\s\S]*?)\n```/g, (match, svg) => {
+    return `<div class="my-6 p-4 bg-[var(--bg-1)] rounded border border-[var(--border)] overflow-x-auto">
+        ${svg.trim()}
+      </div>`;
+  });
+
+  // PlantUML diagrams
+  result = result.replace(/```plantuml\n([\s\S]*?)\n```/g, (match, diagram) => {
+    const encoded = Buffer.from(diagram.trim()).toString("base64");
+    return `<div class="my-6 p-4 bg-[var(--bg-1)] rounded border border-[var(--border)] overflow-x-auto">
+        <img src="https://www.plantuml.com/plantuml/img/${encoded}" alt="PlantUML Diagram" class="max-w-full" />
+      </div>`;
+  });
+
+  // GraphViz diagrams
+  result = result.replace(/```graphviz\n([\s\S]*?)\n```/g, (match, diagram) => {
+    const encoded = encodeURIComponent(diagram.trim());
+    return `<div class="my-6 p-4 bg-[var(--bg-1)] rounded border border-[var(--border)] overflow-x-auto">
+        <img src="https://quickchart.io/graphviz?graph=${encoded}" alt="Graph Diagram" class="max-w-full" />
+      </div>`;
+  });
+
+  // Links and images
+  result = result.replace(
+    /!\[([^\]]*)\]\(([^)]+)\)/g,
+    '<img src="$2" alt="$1" class="max-w-full rounded" />',
+  );
+  result = result.replace(
+    /\[([^\]]+)\]\(([^)]+)\)/g,
+    '<a href="$2" class="text-blue-500 hover:underline">$1</a>',
+  );
+
+  // Bold + Italic (***text***)
+  result = result.replace(
+    /\*\*\*(.+?)\*\*\*/g,
+    '<strong class="font-semibold text-[var(--tx-0)]"><em class="italic">$1</em></strong>',
+  );
+
+  // Bold
+  result = result.replace(
+    /\*\*(.+?)\*\*/g,
+    '<strong class="font-semibold text-[var(--tx-0)]">$1</strong>',
+  );
+
+  // Italic
+  result = result.replace(
+    /\*(.+?)\*/g,
+    '<em class="italic text-[var(--tx-1)]">$1</em>',
+  );
+
+  // Inline code
+  result = result.replace(
+    /`(.+?)`/g,
+    '<code class="bg-brand-grad/10 text-[#2BE9F0] px-1.5 py-0.5 rounded font-mono text-sm">$1</code>',
+  );
+
+  // Standard code blocks (must come before lists)
+  result = result.replace(
+    /```([\w]*)\n([\s\S]*?)\n```/g,
+    (match, lang, code) => {
+      const language = lang || "plaintext";
+      return `<pre class="bg-[var(--bg-1)] p-4 rounded border border-[var(--border)] overflow-x-auto my-4">
+        <code class="font-mono text-sm text-[var(--tx-1)]" data-language="${language}">${code.trim()}</code>
+      </pre>`;
+    },
+  );
+
+  // Lists (must come before paragraph catch-all)
+  result = result.replace(/(?:^- .+$\n?)+/gm, (match) => {
+    const items = match
+      .split("\n")
+      .filter(Boolean)
+      .map(
+        (line) =>
+          `<li class="ml-6 list-disc text-[var(--tx-1)] mb-2 leading-relaxed pl-1">${line.replace(/^- /, "")}</li>`,
+      )
+      .join("\n");
+    return `<ul class="space-y-1">\n${items}\n</ul>`;
+  });
+
+  result = result.replace(/(?:^\d+\. .+$\n?)+/gm, (match) => {
+    const items = match
+      .split("\n")
+      .filter(Boolean)
+      .map(
+        (line) =>
+          `<li class="ml-6 list-decimal text-[var(--tx-1)] mb-2 leading-relaxed pl-1">${line.replace(/^\d+\. /, "")}</li>`,
+      )
+      .join("\n");
+    return `<ol class="space-y-1">\n${items}\n</ol>`;
+  });
+
+  // Paragraphs (catch-all, must come after lists and headings)
+  result = result.replace(
+    /^(?!<|$)(.+)$/gm,
+    '<p class="text-[var(--tx-1)] leading-[1.85] mb-4">$1</p>',
+  );
+
+  // Clean up excess newlines
+  result = result.replace(/\n{3,}/g, "\n\n");
+
+  // Restore escaped characters
+  result = result.replace(/\x00(.)\x00/g, "$1");
+
+  return result;
 }
 
 /* ── Loading skeleton ─────────────────────────────────────────── */
