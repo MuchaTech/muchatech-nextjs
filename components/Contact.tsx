@@ -116,7 +116,7 @@ export default function Contact() {
                 {
                   icon: MapPin,
                   label: "Location",
-                  value: "10520 Dungeni Street, Daveyton, Benoni, Gauteng",
+                  value: "63 Susanna Road, Florentia, Alberton, Gauteng",
                   accent: "#2BE9F0",
                 },
                 {
