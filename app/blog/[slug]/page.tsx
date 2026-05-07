@@ -83,6 +83,15 @@ function Skeleton() {
   );
 }
 
+/* ── Generate slug from heading ──────────────────────────────────── */
+function generateSlug(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^\w\s-]/g, "")
+    .replace(/\s+/g, "-")
+    .replace(/-+/g, "-");
+}
+
 /* ══════════════════════════════════════════════════════════════════
    PAGE
    Uses useParams() — the correct way to read dynamic segments in
@@ -99,6 +108,24 @@ export default function PostPage() {
   const related = posts
     .filter((p) => p.published && p.id !== slug && p.tag === post?.tag)
     .slice(0, 2);
+
+  // Extract headings for TOC
+  const headings =
+    post?.content
+      .split("\n")
+      .filter((l) => l.startsWith("## "))
+      .map((l) => l.replace("## ", ""))
+      .map((heading) => ({
+        text: heading,
+        slug: generateSlug(heading),
+      })) || [];
+
+  const handleTocClick = (headingSlug: string) => {
+    const element = document.getElementById(headingSlug);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <div className="min-h-screen bg-[var(--bg-0)]">
@@ -236,7 +263,13 @@ export default function PostPage() {
                 <div
                   className="prose-content"
                   dangerouslySetInnerHTML={{
-                    __html: renderMarkdown(post.content),
+                    __html: renderMarkdown(post.content).replace(
+                      /^<h2[^>]*>(.+?)<\/h2>$/gm,
+                      (match, heading) => {
+                        const headingSlug = generateSlug(heading);
+                        return `<h2 id="${headingSlug}" class="font-display text-2xl font-bold text-[var(--tx-0)] mt-10 mb-4 pb-2 border-b border-[var(--border)]">${heading}</h2>`;
+                      },
+                    ),
                   }}
                 />
 
@@ -268,27 +301,26 @@ export default function PostPage() {
               {/* ── Sidebar ──────────────────────────────────────── */}
               <aside className="hidden lg:block space-y-6 sticky top-24">
                 {/* Table of contents */}
-                {post.content.includes("## ") && (
+                {headings.length > 0 && (
                   <div className="bg-[var(--bg-1)] border border-[var(--border)] rounded-2xl p-5 ">
                     <h4 className="font-display font-semibold text-[var(--tx-0)] text-sm mb-4">
                       In this article
                     </h4>
                     <ul className="space-y-2">
-                      {post.content
-                        .split("\n")
-                        .filter((l) => l.startsWith("## "))
-                        .map((l) => l.replace("## ", ""))
-                        .map((heading) => (
-                          <li key={heading}>
-                            <span className="flex items-center gap-2 font-mono text-xs text-[var(--tx-2)] hover:text-[#2BE9F0] transition-colors cursor-pointer">
-                              <span
-                                className="w-1 h-1 rounded-full flex-shrink-0"
-                                style={{ backgroundColor: post.accent }}
-                              />
-                              {heading}
-                            </span>
-                          </li>
-                        ))}
+                      {headings.map((heading) => (
+                        <li key={heading.slug}>
+                          <button
+                            onClick={() => handleTocClick(heading.slug)}
+                            className="flex items-center gap-2 font-mono text-xs text-[var(--tx-2)] hover:text-[#2BE9F0] transition-colors cursor-pointer w-full text-left"
+                          >
+                            <span
+                              className="w-1 h-1 rounded-full flex-shrink-0"
+                              style={{ backgroundColor: post.accent }}
+                            />
+                            {heading.text}
+                          </button>
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 )}

@@ -244,7 +244,7 @@ export default function BlogPage() {
                 <Link
                   key={post.id}
                   href={`/blog/${post.id}`}
-                  className="group block bg-[var(--bg-1)] border border-[var(--border)] rounded-2xl overflow-hidden  card-hover flex flex-col"
+                  className="group bg-[var(--bg-1)] border border-[var(--border)] rounded-2xl overflow-hidden  card-hover flex flex-col"
                 >
                   <div
                     className="h-1.5"
