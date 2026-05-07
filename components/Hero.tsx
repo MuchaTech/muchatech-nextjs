@@ -130,7 +130,7 @@ export default function Hero() {
             className="font-mono text-xs tracking-widest uppercase"
             style={{ color: "var(--tx-3)" }}
           >
-            Cybersecurity Ops · Daveyton, South Africa
+            Cybersecurity Ops · Alberton, South Africa
           </span>
           <span
             className="w-1.5 h-1.5 rounded-full animate-pulse-slow"
