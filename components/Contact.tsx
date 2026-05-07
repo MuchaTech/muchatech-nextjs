@@ -17,7 +17,7 @@ export default function Contact() {
     businessArea: "",
     requestType: "",
     message: "",
-    consent: false,
+    consent: String(false),
   });
   const [sent, setSent] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -220,7 +220,7 @@ export default function Contact() {
                         businessArea: "",
                         requestType: "",
                         message: "",
-                        consent: false,
+                        consent: String(false),
                       });
                     }}
                     className="mt-4 font-mono text-sm text-[#2BE9F0] hover:text-[#FC21D1] transition-colors"
@@ -343,7 +343,7 @@ export default function Contact() {
                       <input
                         type="checkbox"
                         name="consent"
-                        checked={form.consent}
+                        checked={String(form.consent) === "true"}
                         onChange={handle}
                         required
                         className="peer sr-only"
