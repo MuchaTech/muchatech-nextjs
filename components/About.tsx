@@ -25,20 +25,20 @@ export default function About() {
   return (
     <section
       id="about"
-      className="py-28 bg-[var(--bg-0)] relative overflow-hidden"
+      className="py-16 md:py-28 bg-[var(--bg-0)] relative overflow-hidden"
     >
       <div className="absolute inset-0 bg-grid opacity-60" />
       <div className="absolute top-0 right-0 w-[500px] h-[400px] bg-[radial-gradient(ellipse_at_80%_0%,rgba(43,233,240,0.08)_0%,transparent_60%)]" />
 
-      <div className="relative max-w-7xl mx-auto px-6">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
         <div className="section-label">
           <span>// 001 · about</span>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
           {/* Left */}
           <div>
-            <h2 className="font-display text-4xl md:text-5xl font-extrabold text-[var(--tx-0)] leading-tight mb-6">
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold text-[var(--tx-0)] leading-tight mb-6">
               We&apos;re a <span className="text-brand">Cybersecurity Ops</span>{" "}
               Focused Company.
             </h2>

@@ -368,3 +368,127 @@ select:focus {
         opacity: 1;
     }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   MARKDOWN BODY — styles for MarkdownRenderer output
+   Uses plain class names to survive dangerouslySetInnerHTML
+═══════════════════════════════════════════════════════════════ */
+.markdown-body {
+    line-height: 1.8;
+}
+
+.md-p {
+    color: var(--tx-1);
+    margin-bottom: 1em;
+    line-height: 1.85;
+}
+.md-h1 {
+    font-family: "Syne", sans-serif;
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--tx-0);
+    margin: 1.8em 0 0.6em;
+}
+.md-h2 {
+    font-family: "Syne", sans-serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--tx-0);
+    margin: 1.6em 0 0.5em;
+    padding-bottom: 0.4em;
+    border-bottom: 1px solid var(--border);
+}
+.md-h3 {
+    font-family: "Syne", sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--tx-0);
+    margin: 1.3em 0 0.4em;
+}
+.md-bq {
+    border-left: 3px solid #2be9f0;
+    padding: 0.5em 1em;
+    margin: 1.2em 0;
+    color: var(--tx-1);
+    font-style: italic;
+    background: rgba(43, 233, 240, 0.04);
+    border-radius: 0 8px 8px 0;
+}
+.md-hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2em 0;
+}
+.md-strong {
+    font-weight: 600;
+    color: var(--tx-0);
+}
+.md-em {
+    font-style: italic;
+    color: var(--tx-1);
+}
+.md-code {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.84em;
+    background: rgba(43, 233, 240, 0.1);
+    color: #2be9f0;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+.md-link {
+    color: #2be9f0;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s;
+}
+.md-link:hover {
+    color: #fc21d1;
+}
+.md-ul {
+    padding-left: 1.5em;
+    margin: 0.8em 0 1em;
+}
+.md-ol {
+    padding-left: 1.5em;
+    margin: 0.8em 0 1em;
+}
+.md-uli {
+    list-style: disc;
+    color: var(--tx-1);
+    margin-bottom: 0.4em;
+    line-height: 1.75;
+}
+.md-oli {
+    list-style: decimal;
+    color: var(--tx-1);
+    margin-bottom: 0.4em;
+    line-height: 1.75;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   MOBILE VIEWPORT UTILITIES
+═══════════════════════════════════════════════════════════════ */
+
+/* Tighter horizontal padding on small screens */
+.section-px {
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+@media (min-width: 640px) {
+    .section-px {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+/* Responsive section vertical padding */
+.section-py {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+}
+@media (min-width: 768px) {
+    .section-py {
+        padding-top: 7rem;
+        padding-bottom: 7rem;
+    }
+}

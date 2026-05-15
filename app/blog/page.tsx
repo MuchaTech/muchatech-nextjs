@@ -9,10 +9,11 @@ import {
   Search,
   BookOpen,
 } from "lucide-react";
+
 import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/ThemeToggle";
-import FooterMini from "@/components/FooterMini";
-import { useTheme } from "@/lib/theme";
+import FooterSecondary from "@/components/FooterSecondary";
+import { useTheme } from "@/theme";
 import { usePosts } from "@/lib/usePosts";
 
 function Skeleton() {
@@ -66,7 +67,7 @@ export default function BlogPage() {
     <div className="min-h-screen bg-[var(--bg-0)]">
       {/* Nav */}
       <header className="bg-[var(--bg-0)]/90 border-b border-[var(--border)] sticky top-0 z-40 nav-blur">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <Link href="/">
             <Logo height={36} variant={isDark ? "dark" : "light"} />
           </Link>
@@ -88,7 +89,7 @@ export default function BlogPage() {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-6 py-16">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-16">
         {/* Hero */}
         <div className="mb-12 text-center">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-[var(--bg-1)] border border-[var(--border)] rounded-full mb-6 shadow-sm">
@@ -182,7 +183,7 @@ export default function BlogPage() {
                     background: `linear-gradient(90deg, ${featured.accent}, ${featured.accent === "#0094CC" ? "#00A86B" : "#0094CC"})`,
                   }}
                 />
-                <div className="p-8 md:p-10 grid md:grid-cols-2 gap-8 items-center">
+                <div className="p-5 sm:p-8 md:p-10 grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 items-center">
                   <div>
                     <div className="flex items-center gap-2 mb-4">
                       <span
@@ -229,7 +230,7 @@ export default function BlogPage() {
                   </div>
                 </div>
                 <div
-                  className="px-10 pb-8 flex items-center gap-2 font-mono text-sm font-semibold"
+                  className="px-5 sm:px-10 pb-6 sm:pb-8 flex items-center gap-2 font-mono text-sm font-semibold"
                   style={{ color: featured.accent }}
                 >
                   Read full article{" "}
@@ -291,7 +292,7 @@ export default function BlogPage() {
       </main>
 
       {/* Footer strip */}
-      <FooterMini />
+      <FooterSecondary />
     </div>
   );
 }

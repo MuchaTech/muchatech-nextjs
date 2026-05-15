@@ -66,7 +66,7 @@ function StatItem({ icon: Icon, value, suffix, label }: (typeof stats)[0]) {
       >
         <Icon className="w-5 h-5 text-[#2BE9F0]" strokeWidth={1.5} />
       </div>
-      <div className="font-display text-4xl font-extrabold mb-1 text-brand">
+      <div className="font-display text-3xl sm:text-4xl font-extrabold mb-1 text-brand">
         <Counter value={value} suffix={suffix} active={active} />
       </div>
       <div className="font-mono text-xs text-[var(--tx-2)] uppercase tracking-widest">
@@ -80,7 +80,7 @@ export default function Stats() {
   return (
     <section className="py-12 bg-[var(--bg-0)] border-y border-[var(--border)] relative overflow-hidden">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_50%,rgba(43,233,240,0.04),rgba(252,33,209,0.03),transparent_70%)]" />
-      <div className="relative max-w-5xl mx-auto px-6">
+      <div className="relative max-w-5xl mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-2 lg:grid-cols-4 divide-x divide-y lg:divide-y-0 divide-[var(--border)]">
           {stats.map((s) => (
             <StatItem key={s.label} {...s} />

@@ -8,7 +8,7 @@ export interface BlogPost {
   author: string;
   readTime: number;
   published: boolean;
-  accent: "#0094CC" | "#00A86B" | "#2BE9F0" | "#FC21D1";
+  accent: string;
 }
 
 export const defaultPosts: BlogPost[] = [
@@ -31,6 +31,18 @@ The three pillars of Zero Trust are:
 - **Use least-privilege access** — Limit user access with just-in-time and just-enough-access policies
 - **Assume breach** — Minimise blast radius and segment access, verify end-to-end encryption
 
+## ZTA Request Flow
+
+\`\`\`mermaid
+flowchart LR
+  U([User / Device]) -->|1 Request| PE[Policy Engine]
+  PE -->|2 Evaluate| PA[(Policy\nAdministrator)]
+  PA -->|3 Trust Score| PE
+  PE -->|4 Allow / Deny| PEP[Policy\nEnforcement\nPoint]
+  PEP -->|5 Forwarded| R([Resource])
+  PE -->|Logs| SIEM[(SIEM)]
+\`\`\`
+
 ## Why Traditional Security Fails
 
 Traditional perimeter security creates a hard shell around a soft interior. Once an attacker breaches the perimeter — through phishing, stolen credentials, or supply chain compromise — they move laterally with little resistance.
@@ -48,7 +60,7 @@ Modern threats including remote work, cloud adoption, and SaaS sprawl have disso
     author: "MuchaTech Team",
     readTime: 6,
     published: true,
-    accent: "#0094CC",
+    accent: "#2BE9F0",
   },
   {
     id: "security-health-check",
@@ -59,6 +71,25 @@ Modern threats including remote work, cloud adoption, and SaaS sprawl have disso
     content: `## What is a Security Health Check?
 
 A security health check is a systematic review of your organisation's security posture. It uncovers vulnerabilities that attackers could exploit — before they do.
+
+## Assessment Process
+
+\`\`\`mermaid
+sequenceDiagram
+  participant C as Client
+  participant MT as MuchaTech
+  participant R as Report
+
+  C->>MT: Initial consultation
+  MT->>MT: Scope definition
+  MT->>C: Questionnaire
+  C->>MT: Data & access
+  MT->>MT: Six-domain assessment
+  MT->>R: Generate findings
+  R->>C: Executive summary
+  R->>C: Technical report
+  MT->>C: 30-day follow-up
+\`\`\`
 
 ## What We Assess
 
@@ -87,6 +118,6 @@ Contact MuchaTech to schedule your complimentary initial consultation.`,
     author: "MuchaTech Team",
     readTime: 4,
     published: true,
-    accent: "#00A86B",
+    accent: "#FC21D1",
   },
 ];

@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useRef } from "react";
 import { ArrowDown, Terminal } from "lucide-react";
-import { useTheme } from "@/lib/theme";
+import { useTheme } from "@/theme";
 
 export default function Hero() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -116,7 +116,7 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-6 text-center">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center">
         {/* Tag pill */}
         <div
           className="inline-flex items-center gap-2.5 mb-10 px-4 py-2 rounded-full border"
@@ -194,7 +194,7 @@ export default function Hero() {
         </div>
 
         <div
-          className="mt-16 font-mono text-xs"
+          className="mt-16 font-mono text-xs hidden sm:block"
           style={{ color: "var(--tx-3)" }}
         >
           <span style={{ color: "var(--cyan)" }}>$</span> muchatech --init

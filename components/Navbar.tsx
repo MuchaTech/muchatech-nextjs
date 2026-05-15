@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Menu, X, ChevronDown, PenLine, ShoppingBag, Zap } from "lucide-react";
 import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/ThemeToggle";
-import { useTheme } from "@/lib/theme";
+import { useTheme } from "@/theme";
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -18,6 +18,7 @@ const navLinks = [
   },
   { label: "Portfolio", href: "#portfolio" },
   { label: "Pricing", href: "#pricing" },
+  { label: "Clients", href: "#testimonials" },
   { label: "Blog", href: "#blog" },
   { label: "Contact", href: "#contact" },
 ];
@@ -58,7 +59,7 @@ export default function Navbar() {
         borderBottom: scrolled ? "1px solid var(--border)" : "none",
       }}
     >
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
         {/* Logo */}
         <a href="#" className="flex items-center">
           <Logo height={38} variant={isDark ? "dark" : "light"} />
@@ -171,6 +172,7 @@ export default function Navbar() {
 
         {/* ── Actions ──────────────────────────────────────── */}
         <div className="flex items-center gap-2">
+          {mobileOpen && <ThemeToggle />}
           {/*<a
             href="/tools"
             className="hidden md:inline-flex items-center gap-1.5 px-3 py-2 font-mono text-xs rounded-lg border transition-all"
@@ -240,22 +242,21 @@ export default function Navbar() {
       </div>
 
       {/* ── Mobile menu ──────────────────────────────────────── */}
+
       {mobileOpen && (
         <div
-          className="md:hidden border-b px-6 py-5"
+          className="md:hidden border-b px-4 sm:px-6 py-4"
           style={{
             backgroundColor: "var(--bg-0)",
             borderColor: "var(--border)",
           }}
         >
           {/* Mobile header row */}
+
           <div
             className="flex items-center justify-between mb-5 pb-4"
             style={{ borderBottom: "1px solid var(--border)" }}
-          >
-            {/*<Logo height={32} variant={isDark ? 'dark' : 'light'} />*/}
-            <ThemeToggle />
-          </div>
+          ></div>
 
           {navLinks.map((link) => (
             <div key={link.label}>

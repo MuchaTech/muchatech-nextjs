@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/ThemeToggle";
-import { useTheme } from "@/lib/theme";
+import { useTheme } from "@/theme";
 
 export default function SuccessPage({
   searchParams,

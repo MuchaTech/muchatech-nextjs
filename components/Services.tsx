@@ -125,15 +125,15 @@ const services = [
 
 export default function Services() {
   return (
-    <section id="services" className="py-28 bg-[var(--bg-1)] relative">
+    <section id="services" className="py-16 md:py-28 bg-[var(--bg-1)] relative">
       <div className="absolute inset-0 bg-grid opacity-40" />
-      <div className="relative max-w-7xl mx-auto px-6">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
         <div className="section-label">
           <span>// 002 · services</span>
         </div>
 
         <div className="mb-16">
-          <h2 className="font-display text-4xl md:text-5xl font-extrabold text-[var(--tx-0)] mb-4">
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold text-[var(--tx-0)] mb-4">
             Proactive Services &<br />
             <span className="text-brand">Incredible Features</span>
           </h2>

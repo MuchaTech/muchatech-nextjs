@@ -20,7 +20,7 @@ import {
 import { tools, type Tool, type ToolCategory } from "@/app/data/tools";
 import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/ThemeToggle";
-import { useTheme } from "@/lib/theme";
+import { useTheme } from "@/theme";
 import { buildPayFastPayload, PAYFAST_URL } from "@/lib/payfast";
 
 // ─── Category pill colours ────────────────────────────────────────

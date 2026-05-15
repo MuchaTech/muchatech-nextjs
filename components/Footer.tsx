@@ -1,7 +1,7 @@
 "use client";
 import { Github } from "lucide-react";
 import Logo from "@/components/Logo";
-import { useTheme } from "@/lib/theme";
+import { useTheme } from "@/theme";
 
 const footerLinks = {
   Services: [
@@ -13,16 +13,12 @@ const footerLinks = {
   Company: [
     { label: "About Us", href: "#about" },
     { label: "Portfolio", href: "#portfolio" },
+    { label: "Clients", href: "#testimonials" },
     // { label: "Tools Store", href: "/tools" },
     { label: "Blog", href: "/blog" },
     { label: "Contact", href: "#contact" },
   ],
-  Legal: [
-    { label: "Privacy Policy", href: "/legal/pp" },
-    { label: "Data Protection", href: "/legal/dp" },
-    { label: "POPIA Compliance", href: "/legal/popia" },
-    { label: "Cookie Policy", href: "/legal/cookie" },
-  ],
+  Legal: [{ label: "Policies", href: "/legal" }],
 };
 
 export default function Footer() {
@@ -35,8 +31,8 @@ export default function Footer() {
       <div className="absolute bottom-0 right-0 w-[400px] h-[200px] bg-[radial-gradient(ellipse_at_100%_100%,rgba(252,33,209,0.04)_0%,transparent_60%)]" />
       <div className="absolute inset-0 bg-grid opacity-30" />
 
-      <div className="relative max-w-7xl mx-auto px-6">
-        <div className="py-16 grid md:grid-cols-2 lg:grid-cols-5 gap-12">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="py-10 md:py-16 grid grid-cols-2 md:grid-cols-2 lg:grid-cols-5 gap-6 md:gap-12">
           <div className="lg:col-span-2">
             <a href="#" className="inline-block mb-5">
               <Logo height={44} variant={isDark ? "dark" : "light"} />

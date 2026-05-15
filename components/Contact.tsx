@@ -87,21 +87,21 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="py-28 bg-[var(--bg-0)] relative overflow-hidden"
+      className="py-16 md:py-28 bg-[var(--bg-0)] relative overflow-hidden"
     >
       <div className="absolute inset-0 bg-grid opacity-50" />
       <div className="absolute top-0 right-0 w-[600px] h-[500px] bg-[radial-gradient(ellipse_at_80%_0%,rgba(43,233,240,0.07)_0%,transparent_60%)]" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[400px] bg-[radial-gradient(ellipse_at_20%_100%,rgba(252,33,209,0.06)_0%,transparent_60%)]" />
 
-      <div className="relative max-w-7xl mx-auto px-6">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
         <div className="section-label">
           <span>// 008 · contact</span>
         </div>
 
-        <div className="grid lg:grid-cols-5 gap-14">
+        <div className="grid lg:grid-cols-5 gap-8 lg:gap-14">
           {/* Left */}
           <div className="lg:col-span-2">
-            <h2 className="font-display text-4xl md:text-5xl font-extrabold text-[var(--tx-0)] leading-tight mb-4">
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold text-[var(--tx-0)] leading-tight mb-4">
               Secure Your
               <br />
               <span className="text-brand">Business</span> Today.
@@ -288,7 +288,7 @@ export default function Contact() {
                     />
                   </div>
 
-                  <div className="grid sm:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {[
                       {
                         name: "businessArea",

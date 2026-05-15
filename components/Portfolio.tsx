@@ -42,15 +42,18 @@ export default function Portfolio() {
   );
 
   return (
-    <section id="portfolio" className="py-28 bg-[var(--bg-1)] relative">
+    <section
+      id="portfolio"
+      className="py-16 md:py-28 bg-[var(--bg-1)] relative"
+    >
       <div className="absolute inset-0 bg-grid opacity-40" />
-      <div className="relative max-w-7xl mx-auto px-6">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
         <div className="section-label">
           <span>// 004 · portfolio</span>
         </div>
 
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-12">
-          <h2 className="font-display text-4xl md:text-5xl font-extrabold text-[var(--tx-0)]">
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold text-[var(--tx-0)]">
             Hands-on <span className="text-brand">Works</span>
           </h2>
           {/* Filter tabs */}

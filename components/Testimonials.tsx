@@ -23,17 +23,17 @@ export default function Testimonials() {
   return (
     <section
       id="testimonials"
-      className="py-28 bg-[var(--bg-0)] relative overflow-hidden"
+      className="py-16 md:py-28 bg-[var(--bg-0)] relative overflow-hidden"
     >
       <div className="absolute inset-0 bg-grid opacity-50" />
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[800px] h-[300px] bg-[radial-gradient(ellipse,rgba(43,233,240,0.05),rgba(252,33,209,0.04),transparent_70%)]" />
 
-      <div className="relative max-w-5xl mx-auto px-6">
+      <div className="relative max-w-5xl mx-auto px-4 sm:px-6">
         <div className="section-label">
           <span>// 006 · testimonials</span>
         </div>
 
-        <h2 className="font-display text-4xl md:text-5xl font-extrabold text-[var(--tx-0)] mb-14">
+        <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold text-[var(--tx-0)] mb-14">
           What Clients <span className="text-brand">Say</span>
         </h2>
 

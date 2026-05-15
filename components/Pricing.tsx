@@ -60,15 +60,15 @@ const plans = [
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="py-28 bg-[var(--bg-1)] relative">
+    <section id="pricing" className="py-16 md:py-28 bg-[var(--bg-1)] relative">
       <div className="absolute inset-0 bg-grid opacity-40" />
-      <div className="relative max-w-7xl mx-auto px-6">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
         <div className="section-label">
           <span>// 005 · pricing</span>
         </div>
 
         <div className="text-center mb-16">
-          <h2 className="font-display text-4xl md:text-5xl font-extrabold text-[var(--tx-0)] mb-4">
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold text-[var(--tx-0)] mb-4">
             Our <span className="text-brand">Plans</span>
           </h2>
           <p className="text-[var(--tx-2)] text-lg max-w-xl mx-auto">
@@ -76,7 +76,7 @@ export default function Pricing() {
           </p>
         </div>
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {plans.map((plan) => (
             <div
               key={plan.name}

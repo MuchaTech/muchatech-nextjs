@@ -8,15 +8,15 @@ export default function Blog() {
   const published = posts.filter((p) => p.published).slice(0, 3);
 
   return (
-    <section id="blog" className="py-28 bg-[var(--bg-1)] relative">
+    <section id="blog" className="py-16 md:py-28 bg-[var(--bg-1)] relative">
       <div className="absolute inset-0 bg-grid opacity-40" />
-      <div className="relative max-w-7xl mx-auto px-6">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
         <div className="section-label">
           <span>// 007 · latest posts</span>
         </div>
 
         <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-12">
-          <h2 className="font-display text-4xl md:text-5xl font-extrabold text-[var(--tx-0)]">
+          <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold text-[var(--tx-0)]">
             Latest <span className="text-brand">Insights</span>
           </h2>
           <div className="flex gap-3 items-center">
@@ -57,12 +57,12 @@ export default function Blog() {
             <p className="font-display text-lg font-semibold text-[var(--tx-0)] mb-2">
               No posts published yet
             </p>
-            <Link
+            {/*<Link
               href="/admin/blog"
               className="inline-flex items-center gap-2 px-5 py-2.5 mt-4 text-[var(--bg-0)] bg-brand-grad font-mono text-sm rounded-xl"
             >
               <PenLine className="w-4 h-4" /> Write a post
-            </Link>
+            </Link>*/}
           </div>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">

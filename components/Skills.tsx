@@ -29,19 +29,19 @@ export default function Skills() {
   return (
     <section
       ref={ref}
-      className="py-28 bg-[var(--bg-0)] relative overflow-hidden"
+      className="py-16 md:py-28 bg-[var(--bg-0)] relative overflow-hidden"
     >
       <div className="absolute inset-0 bg-grid opacity-50" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[400px] bg-[radial-gradient(ellipse,rgba(43,233,240,0.05)_0%,rgba(252,33,209,0.04)_50%,transparent_70%)]" />
 
-      <div className="relative max-w-7xl mx-auto px-6">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6">
         <div className="section-label">
           <span>// 003 · skills</span>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
           <div>
-            <h2 className="font-display text-4xl md:text-5xl font-extrabold text-[var(--tx-0)] leading-tight mb-6">
+            <h2 className="font-display text-3xl md:text-4xl lg:text-5xl font-extrabold text-[var(--tx-0)] leading-tight mb-6">
               Expertise in <span className="text-brand">Cybersecurity</span>{" "}
               <span className="font-mono text-[#2BE9F0] text-3xl">
                 {"{ Domains }"}

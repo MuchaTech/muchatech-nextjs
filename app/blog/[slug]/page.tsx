@@ -10,156 +10,13 @@ import {
   ArrowRight,
   BookOpen,
 } from "lucide-react";
+
 import Logo from "@/components/Logo";
 import ThemeToggle from "@/components/ThemeToggle";
-import FooterMini from "@/components/FooterMini";
-import { useTheme } from "@/lib/theme";
+import MarkdownRenderer from "@/components/MarkdownRenderer";
+import FooterSecondary from "@/components/FooterSecondary";
+import { useTheme } from "@/theme";
 import { usePost, usePosts } from "@/lib/usePosts";
-
-/* ── Markdown → HTML ──────────────────────────────────────────── */
-function renderMarkdown(md: string): string {
-  // Normalize and escape problematic content
-  let result = md.replace(/\r\n/g, "\n").trim();
-
-  // Protect escaped characters
-  result = result.replace(/\\([*`\[\]{}\\])/g, "\x00$1\x00");
-
-  // Headings (before paragraphs)
-  result = result.replace(
-    /^### (.+)$/gm,
-    '<h3 class="font-display text-xl font-bold text-[var(--tx-0)] mt-8 mb-3">$1</h3>',
-  );
-  result = result.replace(
-    /^## (.+)$/gm,
-    '<h2 class="font-display text-2xl font-bold text-[var(--tx-0)] mt-10 mb-4 pb-2 border-b border-[var(--border)]">$1</h2>',
-  );
-  result = result.replace(
-    /^# (.+)$/gm,
-    '<h1 class="font-display text-3xl font-bold text-[var(--tx-0)] mt-10 mb-4">$1</h1>',
-  );
-
-  // Diagrams - Mermaid syntax
-  result = result.replace(/```mermaid\n([\s\S]*?)\n```/g, (match, diagram) => {
-    const encoded = encodeURIComponent(diagram.trim());
-    return `<div class="my-6 p-4 bg-[var(--bg-1)] rounded border border-[var(--border)] overflow-x-auto">
-        <img src="https://mermaid.ink/img/${encoded}" alt="Diagram" class="max-w-full" />
-      </div>`;
-  });
-
-  // Diagrams - ASCII/text diagrams in code blocks
-  result = result.replace(/```diagram\n([\s\S]*?)\n```/g, (match, diagram) => {
-    return `<div class="my-6 p-4 bg-[var(--bg-1)] rounded border border-[var(--border)] overflow-x-auto">
-        <pre class="font-mono text-sm text-[var(--tx-1)] whitespace-pre">${diagram.trim()}</pre>
-      </div>`;
-  });
-
-  // Diagrams - SVG inline
-  result = result.replace(/```svg\n([\s\S]*?)\n```/g, (match, svg) => {
-    return `<div class="my-6 p-4 bg-[var(--bg-1)] rounded border border-[var(--border)] overflow-x-auto">
-        ${svg.trim()}
-      </div>`;
-  });
-
-  // PlantUML diagrams
-  result = result.replace(/```plantuml\n([\s\S]*?)\n```/g, (match, diagram) => {
-    const encoded = Buffer.from(diagram.trim()).toString("base64");
-    return `<div class="my-6 p-4 bg-[var(--bg-1)] rounded border border-[var(--border)] overflow-x-auto">
-        <img src="https://www.plantuml.com/plantuml/img/${encoded}" alt="PlantUML Diagram" class="max-w-full" />
-      </div>`;
-  });
-
-  // GraphViz diagrams
-  result = result.replace(/```graphviz\n([\s\S]*?)\n```/g, (match, diagram) => {
-    const encoded = encodeURIComponent(diagram.trim());
-    return `<div class="my-6 p-4 bg-[var(--bg-1)] rounded border border-[var(--border)] overflow-x-auto">
-        <img src="https://quickchart.io/graphviz?graph=${encoded}" alt="Graph Diagram" class="max-w-full" />
-      </div>`;
-  });
-
-  // Links and images
-  result = result.replace(
-    /!\[([^\]]*)\]\(([^)]+)\)/g,
-    '<img src="$2" alt="$1" class="max-w-full rounded" />',
-  );
-  result = result.replace(
-    /\[([^\]]+)\]\(([^)]+)\)/g,
-    '<a href="$2" class="text-blue-500 hover:underline">$1</a>',
-  );
-
-  // Bold + Italic (***text***)
-  result = result.replace(
-    /\*\*\*(.+?)\*\*\*/g,
-    '<strong class="font-semibold text-[var(--tx-0)]"><em class="italic">$1</em></strong>',
-  );
-
-  // Bold
-  result = result.replace(
-    /\*\*(.+?)\*\*/g,
-    '<strong class="font-semibold text-[var(--tx-0)]">$1</strong>',
-  );
-
-  // Italic
-  result = result.replace(
-    /\*(.+?)\*/g,
-    '<em class="italic text-[var(--tx-1)]">$1</em>',
-  );
-
-  // Inline code
-  result = result.replace(
-    /`(.+?)`/g,
-    '<code class="bg-brand-grad/10 text-[#2BE9F0] px-1.5 py-0.5 rounded font-mono text-sm">$1</code>',
-  );
-
-  // Standard code blocks (must come before lists)
-  result = result.replace(
-    /```([\w]*)\n([\s\S]*?)\n```/g,
-    (match, lang, code) => {
-      const language = lang || "plaintext";
-      return `<pre class="bg-[var(--bg-1)] p-4 rounded border border-[var(--border)] overflow-x-auto my-4">
-        <code class="font-mono text-sm text-[var(--tx-1)]" data-language="${language}">${code.trim()}</code>
-      </pre>`;
-    },
-  );
-
-  // Lists (must come before paragraph catch-all)
-  result = result.replace(/(?:^- .+$\n?)+/gm, (match) => {
-    const items = match
-      .split("\n")
-      .filter(Boolean)
-      .map(
-        (line) =>
-          `<li class="ml-6 list-disc text-[var(--tx-1)] mb-2 leading-relaxed pl-1">${line.replace(/^- /, "")}</li>`,
-      )
-      .join("\n");
-    return `<ul class="space-y-1">\n${items}\n</ul>`;
-  });
-
-  result = result.replace(/(?:^\d+\. .+$\n?)+/gm, (match) => {
-    const items = match
-      .split("\n")
-      .filter(Boolean)
-      .map(
-        (line) =>
-          `<li class="ml-6 list-decimal text-[var(--tx-1)] mb-2 leading-relaxed pl-1">${line.replace(/^\d+\. /, "")}</li>`,
-      )
-      .join("\n");
-    return `<ol class="space-y-1">\n${items}\n</ol>`;
-  });
-
-  // Paragraphs (catch-all, must come after lists and headings)
-  result = result.replace(
-    /^(?!<|$)(.+)$/gm,
-    '<p class="text-[var(--tx-1)] leading-[1.85] mb-4">$1</p>',
-  );
-
-  // Clean up excess newlines
-  result = result.replace(/\n{3,}/g, "\n\n");
-
-  // Restore escaped characters
-  result = result.replace(/\x00(.)\x00/g, "$1");
-
-  return result;
-}
 
 /* ── Loading skeleton ─────────────────────────────────────────── */
 function Skeleton() {
@@ -182,15 +39,6 @@ function Skeleton() {
   );
 }
 
-/* ── Generate slug from heading ──────────────────────────────────── */
-function generateSlug(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^\w\s-]/g, "")
-    .replace(/\s+/g, "-")
-    .replace(/-+/g, "-");
-}
-
 /* ══════════════════════════════════════════════════════════════════
    PAGE
    Uses useParams() — the correct way to read dynamic segments in
@@ -208,29 +56,11 @@ export default function PostPage() {
     .filter((p) => p.published && p.id !== slug && p.tag === post?.tag)
     .slice(0, 2);
 
-  // Extract headings for TOC
-  const headings =
-    post?.content
-      .split("\n")
-      .filter((l) => l.startsWith("## "))
-      .map((l) => l.replace("## ", ""))
-      .map((heading) => ({
-        text: heading,
-        slug: generateSlug(heading),
-      })) || [];
-
-  const handleTocClick = (headingSlug: string) => {
-    const element = document.getElementById(headingSlug);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
   return (
     <div className="min-h-screen bg-[var(--bg-0)]">
       {/* ── Navbar ─────────────────────────────────────────────── */}
       <header className="bg-[var(--bg-0)]/90 border-b border-[var(--border)] sticky top-0 z-40 nav-blur">
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
           <Link href="/">
             <Logo height={36} variant={isDark ? "dark" : "light"} />
           </Link>
@@ -255,7 +85,7 @@ export default function PostPage() {
       </header>
 
       {/* ── Content ────────────────────────────────────────────── */}
-      <main className="max-w-6xl mx-auto px-6 py-14">
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 py-14">
         {loading && <Skeleton />}
 
         {!loading && !post && (
@@ -286,7 +116,7 @@ export default function PostPage() {
 
         {!loading && post && (
           <>
-            <div className="grid lg:grid-cols-4 gap-12 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 lg:gap-12 items-start">
               {/* ── Article ──────────────────────────────────────── */}
               <article className="lg:col-span-3">
                 {/* Accent bar */}
@@ -359,18 +189,7 @@ export default function PostPage() {
                 )}
 
                 {/* Body */}
-                <div
-                  className="prose-content"
-                  dangerouslySetInnerHTML={{
-                    __html: renderMarkdown(post.content).replace(
-                      /^<h2[^>]*>(.+?)<\/h2>$/gm,
-                      (match, heading) => {
-                        const headingSlug = generateSlug(heading);
-                        return `<h2 id="${headingSlug}" class="font-display text-2xl font-bold text-[var(--tx-0)] mt-10 mb-4 pb-2 border-b border-[var(--border)]">${heading}</h2>`;
-                      },
-                    ),
-                  }}
-                />
+                <MarkdownRenderer content={post.content} />
 
                 {/* Bottom CTA */}
                 <div
@@ -398,28 +217,29 @@ export default function PostPage() {
               </article>
 
               {/* ── Sidebar ──────────────────────────────────────── */}
-              <aside className="hidden lg:block space-y-6 sticky top-24">
+              <aside className="space-y-6 lg:sticky lg:top-24 order-last lg:order-none">
                 {/* Table of contents */}
-                {headings.length > 0 && (
+                {post.content.includes("## ") && (
                   <div className="bg-[var(--bg-1)] border border-[var(--border)] rounded-2xl p-5 ">
                     <h4 className="font-display font-semibold text-[var(--tx-0)] text-sm mb-4">
                       In this article
                     </h4>
                     <ul className="space-y-2">
-                      {headings.map((heading) => (
-                        <li key={heading.slug}>
-                          <button
-                            onClick={() => handleTocClick(heading.slug)}
-                            className="flex items-center gap-2 font-mono text-xs text-[var(--tx-2)] hover:text-[#2BE9F0] transition-colors cursor-pointer w-full text-left"
-                          >
-                            <span
-                              className="w-1 h-1 rounded-full flex-shrink-0"
-                              style={{ backgroundColor: post.accent }}
-                            />
-                            {heading.text}
-                          </button>
-                        </li>
-                      ))}
+                      {post.content
+                        .split("\n")
+                        .filter((l) => l.startsWith("## "))
+                        .map((l) => l.replace("## ", ""))
+                        .map((heading) => (
+                          <li key={heading}>
+                            <span className="flex items-center gap-2 font-mono text-xs text-[var(--tx-2)] hover:text-[#2BE9F0] transition-colors cursor-pointer">
+                              <span
+                                className="w-1 h-1 rounded-full flex-shrink-0"
+                                style={{ backgroundColor: post.accent }}
+                              />
+                              {heading}
+                            </span>
+                          </li>
+                        ))}
                     </ul>
                   </div>
                 )}
@@ -510,7 +330,7 @@ export default function PostPage() {
       </main>
 
       {/* ── Footer ─────────────────────────────────────────────── */}
-      <FooterMini />
+      <FooterSecondary />
     </div>
   );
 }
